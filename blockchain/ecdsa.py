@@ -8,7 +8,7 @@ load_dotenv()
 
 token = "your-access-token"
 size = "entropy-size-required"
-url = f'https://qum-backend.azurewebsites.net/t32/quentom-entropy'
+url = f'https://qum-backend.azurewebsites.net/t32/entropy'
 
 #### Define and submit the request
 
