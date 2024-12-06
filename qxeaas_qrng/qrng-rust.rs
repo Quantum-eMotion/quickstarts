@@ -14,7 +14,7 @@ fn main() -> Result<(), reqwest::Error> {
     let access_token = std::env::var("ACCESS_TOKEN")?;
     let size = // Replace with the required size for your application
 
-    let url = format!("https://qum-backend.azurewebsites.net/t32/quentom-entropy");
+    let url = format!("https://api-qxeaas.quantumemotion.com/entropy");
 
     let client = reqwest::Client::new();
     let mut headers = reqwest::header::HeaderMap::new();

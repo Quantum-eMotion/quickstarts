@@ -3,7 +3,7 @@ import requests
 import os
 from dotenv import load_dotenv
 load_dotenv()
-import math 
+import math
 import sympy
 import gmpy2
 
@@ -11,7 +11,7 @@ token = "your-access-token"
 size = "entropy-size-required"
 
 # Define the endpoint
-url = f'https://qum-backend.azurewebsites.net/t32/quentom-entropy'
+url = f'https://api-qxeaas.quantumemotion.com/entropy'
 
 # Define and submit the request
 headers = { 'Authorization': f'Bearer {token}' }
@@ -23,7 +23,7 @@ querystring = { 'size': size }
 p = ''
 while True:
     response = requests.get( url, headers=headers, params=querystring)
-    
+
     s = str(response.json()['random_number'])
     priv_key = int(''.join(filter(str.isdigit, s)))
 
@@ -32,11 +32,11 @@ while True:
         break
     else:
         p=''
-        
+
 q = ''
 while True:
     response = requests.get( url, headers=headers, params=querystring)
-    
+
     s = str(response.json()['random_number'])
 
     priv_key = int(''.join(filter(str.isdigit, s)))
@@ -58,7 +58,7 @@ while(e<phi):
         break
     else:
         e += 1
- 
+
 k = 2
 d = ((k*phi)+1)/e
 
@@ -73,4 +73,4 @@ print(f'Encrypted message: {C}')
 
 C_mpz = gmpy2.mpz(C)
 M = gmpy2.powmod(C_mpz, int(d), n)
-print(f'Decrypted message: {M}')  
+print(f'Decrypted message: {M}')

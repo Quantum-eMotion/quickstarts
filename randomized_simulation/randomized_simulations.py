@@ -15,7 +15,7 @@ num_reps = 500
 num_simulations = 1000
 token = os.environ.get("ACCESS_TOKEN")
 size = os.environ.get("SIZE")
-url = f'https://qum-backend.azurewebsites.net/t32/quentom-entropy'
+url = f'https://api-qxeaas.quantumemotion.com/entropy'
 headers = { 'Authorization': f'Bearer {token}' }
 querystring = { 'size': size }
 
@@ -24,23 +24,23 @@ querystring = { 'size': size }
 def qrng_normal(loc=0.0, scale=1.0, size=1):
 	"""
 	Generate random numbers following a normal distribution using the QRNG API.
-	
+
 	Parameters:
 	loc (float): Mean of the normal distribution.
 	scale (float): Standard deviation of the normal distribution.
 	size (int or tuple of ints): Output shape.
-	
+
 	Returns:
 	numpy.ndarray: Array of random numbers following a normal distribution.
 	"""
 	response = requests.get(url, headers=headers, params=querystring)
 	random_num = int(''.join(filter(str.isdigit, response.json()['random_number']))) % 10**size
 	random_ints = [int(num) for num in str(random_num)]  # Convert string integers to actual integers
-	
+
 	# Transform the random integers to follow a normal distribution
 	random_numbers = np.sqrt(-2 * np.log(random_ints / 65535)) * np.cos(2 * np.pi * random_ints / 65535)
 	random_numbers = (random_numbers - np.mean(random_numbers)) / np.std(random_numbers)
-	
+
 	return loc + scale * random_numbers.reshape(size)
 
 #### Define Function to generate random numbers from given list
@@ -48,12 +48,12 @@ def qrng_normal(loc=0.0, scale=1.0, size=1):
 def qrng_choice(choices, p=None, size=1):
 	"""
 	Generate a random choice from the given list of choices.
-	
+
 	Parameters:
 	choices (list): The list of choices to select from.
 	p (list, optional): The probabilities associated with each choice. If not provided, all choices are equally likely.
 	size (int, optional): The number of choices to generate. Default is 1.
-	
+
 	Returns:
 	list: A list of the selected choices.
 	"""
@@ -61,14 +61,14 @@ def qrng_choice(choices, p=None, size=1):
 	response = requests.get(url, headers=headers, params=querystring)
 	random_num = int(''.join(filter(str.isdigit, response.json()['random_number']))) % 10**size
 	random_ints = [int(num) for num in str(random_num)]  # Convert string integers to actual integers
-	
+
 	# Map the random integers to the indices of the choices list
 	if p is None:
 		p = [1/len(choices)] * len(choices)
-	
+
 	chosen_indices = [i % len(choices) for i in random_ints]
 	chosen_values = [choices[i] for i in chosen_indices]
-	
+
 	return chosen_values
 
 #### Generate Data frame
@@ -123,7 +123,7 @@ for i in range(num_simulations):
 	all_stats.append([df['Sales'].sum().round(0),
 					  df['Commission_Amount'].sum().round(0),
 					  df['Sales_Target'].sum().round(0)])
-	
+
 
 ####  Display Result
 

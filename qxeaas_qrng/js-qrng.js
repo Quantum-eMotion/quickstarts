@@ -4,7 +4,7 @@ const axios = require('axios')
 let token= process.env.ACCESS_TOKEN
 let size= "required-size-for-your-application"
 
-let url = "https://qum-backend.azurewebsites.net/t32/quentom-entropy?size=${size}"
+let url = "https://api-qxeaas.quantumemotion.com/entropy?size=${size}"
 
 axios({
     method: 'get',
@@ -16,4 +16,4 @@ axios({
     console.log(response.data)
 }).catch(function (error) {
     console.log(error)
-})     
+})

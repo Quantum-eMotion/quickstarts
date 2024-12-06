@@ -8,12 +8,12 @@ load_dotenv()
 token = "your-access-token"
 size = "entropy-size-required"
 
-url = f'https://qum-backend.azurewebsites.net/t32/quentom-entropy'
+url = f'https://api-qxeaas.quantumemotion.com/entropy'
 headers = { 'Authorization': f'Bearer {token}' }
 querystring = { 'size': size }
 
 def get_random_int():
-    
+
     response = requests.get(url, headers=headers, params=querystring)
     random_num = int(''.join(filter(str.isdigit, response.json()['random_number'][:-19])))
     # truncate the timestamp from the random_numbers, which is the last 19 characters.
@@ -22,9 +22,9 @@ def get_random_int():
 #### Main function
 
 def main():
-    
+
     # Get CSV file path and num samples
-    csv_file = input("Enter CSV file path: ") 
+    csv_file = input("Enter CSV file path: ")
     num_samples = int(input("Enter number of samples: "))
 
     import chardet
@@ -38,17 +38,17 @@ def main():
     df = pd.read_csv(csv_file, encoding=encoding)
 
     # Get total rows
-    total_rows = len(df)  
+    total_rows = len(df)
 
     # Get random indices
     indices = []
     for i in range(num_samples):
         random_index = get_random_int() % total_rows
         indices.append(random_index)
-        
-    # Print random samples    
+
+    # Print random samples
     for i in indices:
         print(df.loc[i])
-        
+
 if __name__ == "__main__":
     main()

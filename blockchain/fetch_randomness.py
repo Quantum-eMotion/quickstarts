@@ -4,14 +4,14 @@ import requests
 def get_random_bits_from_qrng_api():
     token = "your-access-token"
     size = "entropy-size-required"
-    url = f'https://qum-backend.azurewebsites.net/t32/quentom-entropy'
+    url = f'https://api-qxeaas.quantumemotion.com/entropy'
     headers = { 'Authorization': f'Bearer {token}' }
     querystring = { 'size': size }
-    
+
     response = requests.get(url, headers=headers, params=querystring)
     random_num = int(''.join(filter(str.isdigit, response.json()['random_number'])))
     random_num = random_num % 10**64
-    
+
     return random_num
 
 def send_random_bits_to_smart_contract(random_bits):
